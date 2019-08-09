@@ -1,14 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Blackjack</title>
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/screen.css">
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/screen.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1 class='hello-world'></h1>
+    <section class="header">
+      <img class="header-img" src="./images/blackjack-logo.png" alt="" />
+    </section>
+    <section class="dealt-hands">
+      <div class="dealer">
+        <h2>Dealer</h2>
+        <p class="dealers-hand"></p>
+        <h3>
+          Dealer Score:
+          <h5 class="dealer-score"></h5>
+        </h3>
+      </div>
+      <div class="player">
+        <h2>Player</h2>
+        <p class="players-hand"></p>
+        <h3>
+          Player Score:
+          <h3 class="player-score"></h3>
+        </h3>
+      </div>
+    </section>
+    <section class="game-buttons">
+      <button class="hit-button">Hit</button>
+      <button class="stay-button">Stay</button>
+      <button class="deal-button">Deal</button>
+    </section>
+    <footer>This Game Is Rigged</footer>
     <script src="/main.js" charset="utf-8"></script>
   </body>
 </html>
