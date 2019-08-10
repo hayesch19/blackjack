@@ -15,18 +15,16 @@ const ranks = [
   { name: 'king', value: 10 }
 ]
 
-const deck = []
-const playersHand = []
-const dealersHand = []
+let deck = []
+let playersHand = []
+let dealersHand = []
 
 const main = () => {
   createDeck()
   shuffleDeck()
-  dealPlayersHand()
-  dealDealerHand()
+  dealOpeningHand()
   getPlayerHandTotal()
   getDealerHandTotal()
-  dealPlayersCard()
 }
 // Make Deck
 const createDeck = () => {
@@ -41,7 +39,6 @@ const createDeck = () => {
       })
     }
   }
-  console.log(deck)
 }
 // Shuffle Deck
 const shuffleDeck = () => {
@@ -54,33 +51,55 @@ const shuffleDeck = () => {
   console.log(deck)
 }
 // Opening Card Deal
-// Player
-const dealPlayersHand = () => {
+const dealOpeningHand = () => {
   for (let i = 0; i < 2; i++) {
     const dealtCard = deck.pop()
     playersHand.push(dealtCard)
+    const cardElement = document.createElement('img')
+    cardElement.src =
+      '/images/' + playersHand[0].rank + '_of_' + playersHand[0].suit + '.svg'
+    document.querySelector('.players-hand').appendChild(cardElement)
   }
-  console.log(playersHand)
-}
-// Dealer
-const dealDealerHand = () => {
   for (let i = 0; i < 2; i++) {
     const dealtCard = deck.pop()
     dealersHand.push(dealtCard)
+    const cardElement = document.createElement('img')
+    cardElement.src =
+      '/images/' + dealersHand[0].rank + '_of_' + playersHand[0].suit + '.svg'
+    document.querySelector('.dealers-hand').appendChild(cardElement)
   }
-  console.log(dealersHand)
 }
 // Hit Button
-const dealPlayersCard = () => {
+const dealOneCard = () => {
   for (let i = 0; i < 1; i++) {
     const dealtCard = deck.pop()
     playersHand.push(dealtCard)
+    // Display Card
+    document.querySelector('.players-hand').textContent = dealtCard
+    getPlayerHandTotal()
   }
   console.log(playersHand)
 }
 // Stay Button
+const stayDealerDraw = () => {
+  const dealtCard = deck.pop()
+  dealersHand.push(dealtCard)
+  // Display Card
+  document.querySelector('.dealers-hand').textContent = dealtCard
+  getDealerHandTotal()
+}
+// Deal New Hand
+const dealNewHand = () => {
+  deck = []
+  playersHand = []
+  dealersHand = []
+  createDeck()
+  shuffleDeck()
+  dealOpeningHand()
+  getPlayerHandTotal()
+  getDealerHandTotal()
+}
 // Hand Totals
-// Player
 const getPlayerHandTotal = () => {
   let handTotal
   for (let i = 0; i < playersHand.length; i++) {
@@ -93,9 +112,8 @@ const getPlayerHandTotal = () => {
       document.querySelector('.player-score').textContent = handTotal
     }
   }
-  console.log(handTotal)
+  console.log(playersHand)
 }
-// Dealer
 const getDealerHandTotal = () => {
   let handTotal
   for (let i = 0; i < dealersHand.length; i++) {
@@ -108,7 +126,10 @@ const getDealerHandTotal = () => {
       document.querySelector('.dealer-score').textContent = handTotal
     }
   }
-  console.log(handTotal)
+  console.log(dealersHand)
 }
 
 document.addEventListener('DOMContentLoaded', main)
+document.querySelector('.hit-button').addEventListener('click', dealOneCard)
+document.querySelector('.deal-button').addEventListener('click', dealNewHand)
+document.querySelector('.stay-button').addEventListener('click', stayDealerDraw)
