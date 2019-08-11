@@ -21,11 +21,6 @@ button {
   padding-right: 0.3rem;
 }
 
-footer {
-  padding-top: 2.5rem;
-  padding-bottom: 1.5rem;
-}
-
 h2 {
   font-size: 2.5rem;
   font-family: 'Work Sans', sans-serif;
@@ -36,43 +31,42 @@ h3 {
   font-family: 'Work Sans', sans-serif;
 }
 
+img {
+  height: 15rem;
+  width: 10rem;
+  padding: 0.5rem;
+  margin: 1rem;
+}
 /***** Classes *****/
-
-.dealt-hands {
-  display: inline-flex;
-}
-.game-buttons {
-  padding-bottom: 2rem;
-}
 
 .dealer {
   padding-right: 2rem;
 }
 
-.dealer-score {
-  margin: 0.5rem;
-  padding: 1rem;
-  font-size: 3rem;
+.header {
+  margin: 0;
 }
 
-.player {
-  padding-left: 2rem;
+.hide {
+  display: none;
 }
 
-.player-score {
+.game-buttons {
+  padding-bottom: 0.5rem;
+}
+.player-name {
+  margin-top: 0.5rem;
+  margin-bottom: 0.02rem;
+}
+.player-hand-total {
   margin: 0.5rem;
-  padding: 1rem;
-  font-size: 3rem;
 }
 
 /***** Image Classes ****/
-.card-img {
-  height: 8rem;
-  width: 6rem;
-}
 
 .header-img {
   padding-top: 1rem;
+  margin: 0;
   height: 14rem;
   width: 20rem;
 }
