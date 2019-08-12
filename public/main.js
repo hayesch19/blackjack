@@ -20,6 +20,8 @@ let playersHand = []
 let dealersHand = []
 
 const main = () => {
+  playersHand = []
+  dealersHand = []
   createDeck()
   shuffleDeck()
   dealPlayerHand()
@@ -54,27 +56,7 @@ const shuffleDeck = () => {
   }
   console.log(deck)
 }
-// Deal New Games
-const dealNewGame = () => {
-  playersHand = []
-  dealersHand = []
-  createDeck()
-  shuffleDeck()
-  dealPlayerHand()
-  dealDealerHand()
-  getPlayerHandTotal()
-  getDealerHandTotal()
-  document.querySelector('.hit-button').classList.remove('hide')
-  document.querySelector('.stay-button').classList.remove('hide')
-  document.querySelector('.deal-button').classList.add('hide')
-  document.querySelector('.dealer-hand-total').classList.add('hide')
-}
-const addRemoveButtonsValues = () => {
-  document.querySelector('.hit-button').classList.add('hide')
-  document.querySelector('.stay-button').classList.add('hide')
-  document.querySelector('.deal-button').classList.remove('hide')
-  document.querySelector('.dealer-hand-total').classList.remove('hide')
-}
+
 // Opening Deal
 const dealPlayerHand = () => {
   for (let i = 0; i < 2; i++) {
@@ -85,21 +67,22 @@ const dealPlayerHand = () => {
       './images/' + playersHand[i].rank + '_of_' + playersHand[i].suit + '.svg'
     document.querySelector('.player-cards').appendChild(cardElement)
   }
+  getPlayerHandTotal()
   console.log(playersHand)
 }
 const dealDealerHand = () => {
-  const playerHandTotal = document.querySelector('.player-hand-total')
+  const dealerHandTotal = document.querySelector('.player-hand-total')
   const playerName = document.querySelector('.player-name')
   const dealerName = document.querySelector('.dealer-name')
   for (let i = 0; i < 2; i++) {
     const dealtCard = deck.pop()
     dealersHand.push(dealtCard)
   }
-  getPlayerHandTotal()
-  if (playerHandTotal > 21) {
-    playerName.textContent = 'Player Wins!'
-    dealerName.textContent = 'Dealer Loses!'
-    addRemoveButtonsValues()
+  getDealerHandTotal()
+  if (dealerHandTotal === 21) {
+    playerName.textContent = 'Player Loses!'
+    dealerName.textContent = 'Dealer Wins!'
+    newGame()
   }
   console.log(dealersHand)
 }
@@ -112,22 +95,18 @@ const playerDrawsCard = () => {
   for (let i = 0; i < 1; i++) {
     const dealtCard = deck.pop()
     playersHand.push(dealtCard)
-    const cardElement = document.createElement('img')
-    cardElement.src =
-      './images/' + playersHand[i].rank + '_of_' + playersHand[i].suit + '.svg'
-    document.querySelector('.player-cards').appendChild(cardElement)
   }
   // Player Busts
   getPlayerHandTotal()
-  if (playerHandValue > 21) {
+  if (playerHandValue < 22) {
     playerName.textContent = 'Player Busts!'
     dealerName.textContent = 'Dealer Wins!'
-  } else if (playerHandValue > 21) {
+    newGame()
+  } else if (playerHandValue === 21) {
     playerName.textContent = 'Player Wins!'
     dealerName.textContent = 'Dealer Loses!'
-    addRemoveButtonsValues()
+    newGame()
   }
-  console.log(playersHand)
 }
 
 // Hand Totals
@@ -143,13 +122,13 @@ const getPlayerHandTotal = () => {
     }
   }
   playerHandValue.textContent = playerHandTotal
-  if (playerHandValue > 21) {
+  if (playerHandValue < 22) {
     playerHandTotal.textContent = 'Player Busts!'
+    newGame()
   } else if (playerHandValue === 21) {
     playerHandTotal.textContent = 'Player Wins!'
-    addRemoveButtonsValues()
+    newGame()
   }
-  console.log(playerHandTotal)
 }
 const getDealerHandTotal = () => {
   const dealerHandValue = document.querySelector('.dealer-hand-total')
@@ -163,7 +142,6 @@ const getDealerHandTotal = () => {
     }
   }
   dealerHandValue.textContent = dealerHandTotal
-  console.log(dealerHandTotal)
 }
 
 // Player Stands
@@ -172,7 +150,6 @@ const playerStands = () => {
   const playerHandValue = document.querySelector('.player-hand-total')
   const dealerName = document.querySelector('.dealer-name')
   const playerName = document.querySelector('.player-name')
-  addRemoveButtonsValues()
   while (dealerHandValue.textContent < 17) {
     for (let i = 0; i < 1; i++) {
       const dealtCard = deck.pop()
@@ -186,16 +163,44 @@ const playerStands = () => {
   getPlayerHandTotal()
   if (dealerHandValue.textContent > 21) {
     playerName.textContent = 'Player Wins!'
+    dealerName.textContent = 'Dealer Loses'
+    newGame()
   } else if (dealerHandValue.textContent > playerHandValue.textContent) {
     playerName.textContent = 'Player Loses!'
     dealerName.textContent = 'Dealer Wins'
+    newGame()
   } else if (dealerHandValue.textContent < playerHandValue.textContent) {
     playerName.textContent = 'Player Wins!'
+    dealerName.textContent = 'Dealer Loses'
+    newGame()
   } else if (dealerHandValue.textContent === playerHandValue.textContent) {
     playerName.textContent = 'Draw!'
     dealerName.textContent = 'Draw!'
+    newGame()
   }
-  console.log(dealersHand)
+}
+// Deal Button
+const newGame = () => {
+  document.querySelector('.hit-button').classList.add('hide')
+  document.querySelector('.stay-button').classList.add('hide')
+  document.querySelector('.deal-button').classList.remove('hide')
+}
+// Deal New Game
+const dealNewGame = () => {
+  main()
+  resetButton()
+  document.querySelector('.hit-button').classList.remove('hide')
+  document.querySelector('.stay-button').classList.remove('hide')
+  document.querySelector('.deal-button').classList.add('hide')
+}
+const resetButton = () => {
+  document.querySelector('.player-cards').textContent = ''
+  document.querySelector('.player-name').textContent = 'Player Score'
+  document.querySelector('.player-hand-total').textContent = ''
+  document.querySelector('.hit-button').classList.add('hide')
+  document.querySelector('.stay-button').classList.add('hide')
+  document.querySelector('.deal-button').classList.remove('hide')
+  document.querySelector('.dealer-hand-total').classList.remove('hide')
 }
 
 document.addEventListener('DOMContentLoaded', main)
