@@ -25,6 +25,7 @@ const main = () => {
   createDeck()
   shuffleDeck()
   dealPlayerHand()
+  displayPlayerCards()
   dealDealerHand()
   getPlayerHandTotal()
   getDealerHandTotal()
@@ -43,16 +44,14 @@ const createDeck = () => {
       })
     }
   }
-  console.log(deck)
 }
 // Shuffle Deck
 const shuffleDeck = () => {
   for (let i = deck.length - 1; i >= 0; i--) {
-    const j = Math.floor(Math.random() * i)
-    const firstArray = deck[i]
-    const secondArray = deck[j]
-    deck[i] = secondArray
-    deck[j] = firstArray
+    const random = Math.floor(Math.random() * i)
+    const temp = deck[random]
+    deck[random] = deck[i]
+    deck[i] = temp
   }
   console.log(deck)
 }
@@ -62,10 +61,6 @@ const dealPlayerHand = () => {
   for (let i = 0; i < 2; i++) {
     const dealtCard = deck.pop()
     playersHand.push(dealtCard)
-    const cardElement = document.createElement('img')
-    cardElement.src =
-      './images/' + playersHand[i].rank + '_of_' + playersHand[i].suit + '.svg'
-    document.querySelector('.player-cards').appendChild(cardElement)
   }
   getPlayerHandTotal()
   console.log(playersHand)
@@ -86,6 +81,18 @@ const dealDealerHand = () => {
   }
   console.log(dealersHand)
 }
+// Display Card
+const displayPlayerCards = () => {
+  playersHand
+    .map(card => {
+      const cardElement = document.createElement('img')
+      cardElement.src = './images/' + card.rank + '_of_' + card.suit + '.svg'
+      return cardElement
+    })
+    .forEach(cardElement => {
+      document.querySelector('.player-cards').appendChild(cardElement)
+    })
+}
 
 // Hit/Draw Card
 const playerDrawsCard = () => {
@@ -95,10 +102,11 @@ const playerDrawsCard = () => {
   for (let i = 0; i < 1; i++) {
     const dealtCard = deck.pop()
     playersHand.push(dealtCard)
+    displayPlayerCards()
   }
   // Player Busts
   getPlayerHandTotal()
-  if (playerHandValue < 22) {
+  if (playerHandValue < 21) {
     playerName.textContent = 'Player Busts!'
     dealerName.textContent = 'Dealer Wins!'
     newGame()
@@ -120,9 +128,10 @@ const getPlayerHandTotal = () => {
     } else {
       playerHandTotal = card.value
     }
+    console.log(playerHandTotal)
   }
   playerHandValue.textContent = playerHandTotal
-  if (playerHandValue < 22) {
+  if (playerHandValue < 21) {
     playerHandTotal.textContent = 'Player Busts!'
     newGame()
   } else if (playerHandValue === 21) {
@@ -179,6 +188,7 @@ const playerStands = () => {
     newGame()
   }
 }
+
 // Deal Button
 const newGame = () => {
   document.querySelector('.hit-button').classList.add('hide')
@@ -187,8 +197,8 @@ const newGame = () => {
 }
 // Deal New Game
 const dealNewGame = () => {
-  main()
   resetButton()
+  main()
   document.querySelector('.hit-button').classList.remove('hide')
   document.querySelector('.stay-button').classList.remove('hide')
   document.querySelector('.deal-button').classList.add('hide')
